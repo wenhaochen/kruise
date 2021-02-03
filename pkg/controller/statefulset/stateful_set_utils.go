@@ -455,8 +455,8 @@ func NewStatefulsetCondition(conditionType apps.StatefulSetConditionType, condit
 	}
 }
 
-// GetStatefulsetConditition returns the condition with the provided type.
-func GetStatefulsetConditition(status appsv1beta1.StatefulSetStatus, condType apps.StatefulSetConditionType) *apps.StatefulSetCondition {
+// GetStatefulsetCondition returns the condition with the provided type.
+func GetStatefulsetCondition(status appsv1beta1.StatefulSetStatus, condType apps.StatefulSetConditionType) *apps.StatefulSetCondition {
 	for i := range status.Conditions {
 		c := status.Conditions[i]
 		if c.Type == condType {
@@ -468,7 +468,7 @@ func GetStatefulsetConditition(status appsv1beta1.StatefulSetStatus, condType ap
 
 // SetStatefulsetCondition updates the statefulset to include the provided condition. If the condition that
 func SetStatefulsetCondition(status *appsv1beta1.StatefulSetStatus, condition apps.StatefulSetCondition) {
-	currentCond := GetStatefulsetConditition(*status, condition.Type)
+	currentCond := GetStatefulsetCondition(*status, condition.Type)
 	if currentCond != nil && currentCond.Status == condition.Status && currentCond.Reason == condition.Reason {
 		return
 	}
@@ -481,14 +481,14 @@ func SetStatefulsetCondition(status *appsv1beta1.StatefulSetStatus, condition ap
 }
 
 func filterOutCondition(conditions []apps.StatefulSetCondition, condType apps.StatefulSetConditionType) []apps.StatefulSetCondition {
-	var newCondititions []apps.StatefulSetCondition
+	var newConditions []apps.StatefulSetCondition
 	for _, c := range conditions {
 		if c.Type == condType {
 			continue
 		}
-		newCondititions = append(newCondititions, c)
+		newConditions = append(newConditions, c)
 	}
-	return newCondititions
+	return newConditions
 }
 
 func getStatefulSetKey(o metav1.Object) string {
